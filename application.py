@@ -19,10 +19,28 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-@app.route('/api/categories')
+@app.route('/api/catalog/')
+def catalogJSON():
+    categories = session.query(Category).all()
+    return jsonify(Category=[c.Serialize for c in categories])
+
+
+@app.route('/api/catalog/categories/<int:category_id>/')
+def catalogSpecificCategoryJSON(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
+    return jsonify(Category=category.Serialize)
+
+
+@app.route('/api/categories/')
 def categoriesJSON():
     categories = session.query(Category).all()
-    return jsonify(Category=[c.serialize for c in categories])
+    return jsonify(Category=[c.shortSerialize for c in categories])
+
+
+@app.route('/api/categories/<int:category_id>/')
+def specificCategoryJSON(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
+    return jsonify(Category=category.shortSerialize)
 
 
 @app.route('/api/categories/<int:category_id>/items/')

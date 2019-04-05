@@ -26,12 +26,20 @@ class Category(Base):
     user = relationship(User)
 
     @property
-    def serialize(self):
+    def Serialize(self):
         # Returns category data in an easily serializeable format.
         return {
             'id': self.id,
             'name': self.name,
             'Item': [i.serialize for i in self.items]
+        }
+
+    @property
+    def shortSerialize(self):
+        # Returns category data in an easily serializeable format.
+        return {
+            'id': self.id,
+            'name': self.name,
         }
 
 
