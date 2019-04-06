@@ -59,6 +59,15 @@ def ItemsJSON(category_id, item_id):
     return jsonify(Item=item.serialize)
 
 
+# Show root web page
+@app.route('/')
+def showHome():
+    categories = session.query(Category).all()
+    items = session.query(Item).all()
+    return render_template('index.html', categories=categories, items=items)
+
+
+
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
