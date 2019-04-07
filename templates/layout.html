@@ -60,7 +60,7 @@
             </div>
           </div>
         </div> 
-        <nav class="site-navigation text-right text-md-center" role="navigation">
+        <!-- <nav class="site-navigation text-right text-md-center" role="navigation">
           <div class="container">
             <ul class="site-menu js-clone-nav d-none d-md-block">
               <li class="has-children">
@@ -93,12 +93,55 @@
               <li><a href="contact.html">Contact</a></li>
             </ul>
           </div>
-        </nav>
+        </nav> -->
       </header>
+      
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            {% if category == "success" %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>{{message}}</strong>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% elif category == "error"  %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% else %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      
+      {% with messages = get_flashed_messages(category_filter=["sucess"]) %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-sucess alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+      
       {% block container %}
 
           
-          {% endblock %}
+      {% endblock %}
       
 
     </div>  
