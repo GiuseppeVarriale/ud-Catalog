@@ -66,6 +66,16 @@ def showHome():
     items = session.query(Item).all()
     return render_template('index.html', categories=categories, items=items)
 
+# Show a Category
+@app.route('/categories/<int:category_id>/')
+@app.route('/categories/<int:category_id>/items/')
+def showCatalogCategory(category_id):
+    categories = session.query(Category).all()
+    category = session.query(Category).filter_by(id=category_id).one()
+    items = session.query(Item).filter_by(
+        cat_id=category_id).all()
+    return render_template('showCatalogCategory.html', categories=categories,
+                           sCategory=category, items=items)
 
 
 if __name__ == '__main__':
