@@ -4,15 +4,13 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from flask import Flask, render_template, redirect, url_for, request, flash,\
     jsonify
-from database_setup import Base, Category, Item, User
+from database_setup import Base, Category, Item, User, engine
 
 app = Flask(__name__)
 
 
-# DB Session maker
 # Create session and connect to DB
-engine = create_engine('sqlite:///catalog.db',
-                       connect_args={'check_same_thread': False})
+
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -66,7 +64,7 @@ def showHome():
     items = session.query(Item).all()
     return render_template('index.html', categories=categories, items=items)
 
-# Show a Category
+# Show a Catalog Category web page
 @app.route('/categories/<int:category_id>/')
 @app.route('/categories/<int:category_id>/items/')
 def showCatalogCategory(category_id):
@@ -76,6 +74,17 @@ def showCatalogCategory(category_id):
         cat_id=category_id).all()
     return render_template('showCatalogCategory.html', categories=categories,
                            sCategory=category, items=items)
+
+# Show a Catalog item web page
+@app.route('/categories/<int:category_id>/items/<int:item_id>/')
+def showCatalogItem(category_id, item_id):
+    categories = session.query(Category).all()
+    category = session.query(Category).filter_by(id=category_id).one()
+    item = session.query(Item).filter_by(
+        id=item_id).one()
+    return render_template('showCatalogItem.html', category=category,
+                           item=item, categories=categories)
+
 
 
 if __name__ == '__main__':
