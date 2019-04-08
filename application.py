@@ -64,6 +64,7 @@ def showHome():
     items = session.query(Item).order_by(Item.id.desc())
     return render_template('showHome.html', categories=categories, items=items)
 
+
 # Show a Catalog Category web page
 @app.route('/categories/<int:category_id>/')
 @app.route('/categories/<int:category_id>/items/')
@@ -79,6 +80,7 @@ def showCatalogCategory(category_id):
     items = session.query(Item).filter_by(cat_id=category_id).all()
     return render_template('showCatalogCategory.html', categories=categories,
                            sCategory=category, items=items)
+
 
 # Show a Catalog item web page
 @app.route('/categories/<int:category_id>/items/<int:item_id>/')
@@ -110,8 +112,7 @@ def newCategory():
 @app.route('/admin/categories/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
     try:
-        editedCategory = session.query(
-            Category).filter_by(id=category_id).one()
+        editedCategory = session.query(Category).filter_by(id=category_id).one()
     except NoResultFound:
         flash("Error: The category with id '%s' does not exist." % category_id, "error")
         return redirect(url_for('showHome'))
@@ -143,7 +144,7 @@ def newItem(category_id=0):
 
 
 
-# Edit a Catalog Category
+# Edit a Catalog Item
 @app.route('/admin/categories/<int:category_id>/items/<int:item_id>/edit/', methods=['GET', 'POST'])
 def editItem(category_id, item_id):
     categories = session.query(Category).all()
@@ -170,6 +171,25 @@ def editItem(category_id, item_id):
         else:   
             return render_template('editItem.html', item=editedItem, categories=categories)
 
+
+# Delete a Category item
+@app.route('/admin/categories/<int:category_id>/items/<int:item_id>/delete/', methods=['GET', 'POST'])
+def deleteItem(category_id, item_id):
+    try:
+        itemToDelete = session.query(Item).filter_by(id=item_id).one()
+    except NoResultFound:
+        flash("Error: The Item with id '%s' does not exist." % item_id, "error")
+        return redirect(url_for('showHome'))
+    if request.method == 'POST':
+        session.delete(itemToDelete)
+        session.commit()
+        flash("Item deleted!", "success")
+        return redirect(url_for('showHome'))
+    else:
+        if itemToDelete.cat_id != category_id:
+            return redirect(url_for('deleteItem', category_id=itemToDelete.cat_id, item_id=itemToDelete.id))
+        else:   
+            return render_template('deleteItem.html', item=itemToDelete)
 
 
 if __name__ == '__main__':
