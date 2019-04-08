@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block container %}
+<div class="bg-light py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mb-0">
+        <a href="{{url_for('showHome')}}">Home</a>
+        <span class="mx-2 mb-0">/</span> <strong>{{category.name}}</strong>
+        <span class="mx-2 mb-0">/</span><strong class="text-black">Delete</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="site-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="h3 mb-3 text-black">Delete Category</h2>
+      </div>
+      <div class="col-md-12">
+        <h1> Are You Sure you want to delete category <i><u>{{category.Title}}</u></i>? </h1>
+
+        <div class="col-md-6">
+          <h2 class="text-black">{{category.name}}</h2>
+        </div>
+        {% if category.items %}
+        <div class="alert alert-warning" role="alert">
+          This is not a empty Category, this actio will delete all items too!
+        </div>
+        {% endif %}
+        <div>
+          <form action="{{url_for('deleteCategory', category_id=category.id)}}" method="post">
+            <div class="form-group row">
+              <div class="col-lg-6">
+                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Yes">
+              </div>
+              <div class="col-lg-6">
+                <a href="{{url_for('showHome')}}">
+                  <input type="button" class="btn btn-secondary btn-lg btn-block" value="Cancel">
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+        {% if category.items %}
+        <div class="border p-4 rounded mb-4">
+          <h3 class="mb-3 h6 text-uppercase text-black d-block">Category Items:</h3>
+          <div class="row mb-5">
+
+            {% endif %}
+            {% for item in category.items %}
+
+            <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+              <div class="block-4 text-center border">
+                <!-- <figure class="block-4-image">
+                      <a href="shop-single.html"><img src="{{ url_for('static', filename='images/cloth_1.jpg') }}" alt="Image placeholder" class="img-fluid"></a>
+                    </figure> -->
+                <div class="block-4-text p-4">
+                  <h3><a
+                      href="{{url_for('showCatalogItem', category_id = item.cat_id, item_id= item.id)}}">{{item.title}}</a>
+                  </h3>
+                  <p class="mb-0">{{item.description}}</p>
+                  <!-- <p class="text-primary font-weight-bold">$50</p> -->
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+
+    {% endblock %}

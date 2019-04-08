@@ -127,6 +127,22 @@ def editCategory(category_id):
         return render_template('editCategory.html', category=editedCategory)
 
 
+# Delete a Category
+@app.route('/admin/categories/<int:category_id>/delete/', methods=['GET', 'POST'])
+def deleteCategory(category_id):
+    try:
+        categoryToDelete = session.query(Category).filter_by(id=category_id).one()
+    except NoResultFound:
+        flash("Error: The Item with id '%s' does not exist." % category_id, "error")
+        return redirect(url_for('showHome'))
+    if request.method == 'POST':
+        session.delete(categoryToDelete)
+        session.commit()
+        flash("Category deleted!", "success")
+        return redirect(url_for('showHome'))
+    else:
+        return render_template('deleteCategory.html', category=categoryToDelete)
+
 # Create Catalog Item
 @app.route('/admin/items/new/', methods=['GET', 'POST'])
 @app.route('/admin/categories/<int:category_id>/items/new/', methods=['GET', 'POST'])
