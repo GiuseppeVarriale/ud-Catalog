@@ -81,7 +81,7 @@
                 <ul class="list-unstyled mb-0">
                   {% for category in categories %}
                     <li class="mb-1"><a href="{{ url_for('showCatalogCategory', category_id = category.id) }}" class="d-flex">
-                      <span>{{category.name}}</span> <span class="text-black ml-auto">(QTD?)</span></a>
+                      <span>{{category.name}}</span> <span class="text-black ml-auto"></span></a>
                     </li>
                   {% endfor %}
                 </ul>

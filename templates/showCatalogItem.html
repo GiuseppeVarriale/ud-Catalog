@@ -24,7 +24,7 @@
                     <ul class="list-unstyled mb-0">
                       {% for category in categories %}
                         {% if item.cat_id == category.id %}
-                          <li class="mb-1"><a href="{{ url_for('showCatalogCategory', category_id = category.id) }}" class="d-flex"><span style=" font-weight:bold ">{{category.name}}</span> <span class="text-black ml-auto">(QTD?)</span></a></li>
+                          <li class="mb-1"><a href="{{ url_for('showCatalogCategory', category_id = category.id) }}" class="d-flex"><span style=" font-weight:bold ">{{category.name}}</span> <span class="text-black ml-auto"></span></a></li>
                         {% else %}
                           <li class="mb-1"><a href="{{ url_for('showCatalogCategory', category_id = category.id) }}" class="d-flex"><span>{{category.name}}</span> <span class="text-black ml-auto">(QTD?)</span></a></li>
                         {% endif %}
