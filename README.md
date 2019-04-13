@@ -18,7 +18,6 @@ Install VirtualBox and Vagrant:
 3. If you **is** a back-end developer nanodegree student, you can Download the Vagrant File with the configurations in [**This Link**](https://s3.amazonaws.com/video.udacity-data.com/topher/2018/April/5acfbfa3_fsnd-virtual-machine/fsnd-virtual-machine.zip)\
 If **not** Download or Clone [**this repository**](https://github.com/udacity/fullstack-nanodegree-vm/blob/master/vagrant/Vagrantfile)
 
-
 ## Launching the Virtual Machine
 
 1. Launch the Vagrant VM inside Vagrant sub-directory in the downloaded fullstack-nanodegree-vm repository using command:
