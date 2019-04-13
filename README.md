@@ -6,7 +6,7 @@ This is the fourth Back-end developer Udacity nanodegree project.
 The project is a catalog app, with some json end points.  
 Authentication is provided by Facebook using OAuth  
 Items are classified by categories.  
-You can create, edit and delete your own Items when you is logged. 
+You can create, edit and delete your own Items when you is logged.
 
 ## Setup Project
 
@@ -17,6 +17,7 @@ Install VirtualBox and Vagrant:
 
 3. If you **is** a back-end developer nanodegree student, you can Download the Vagrant File with the configurations in [**This Link**](https://s3.amazonaws.com/video.udacity-data.com/topher/2018/April/5acfbfa3_fsnd-virtual-machine/fsnd-virtual-machine.zip)\
 If **not** Download or Clone [**this repository**](https://github.com/udacity/fullstack-nanodegree-vm/blob/master/vagrant/Vagrantfile)
+
 
 ## Launching the Virtual Machine
 
@@ -37,7 +38,8 @@ If **not** Download or Clone [**this repository**](https://github.com/udacity/fu
 3. If Download the content manualy from github you need to move the folder to vm vagrant folder.  
 
 ## Facebook id with OAUTH
-to authentication ona app is used facebook api with OAUTH, you need to configure it with you app_id and app_secret
+
+To authentication the app use facebook api with OAUTH. You need to configure it with you app_id and app_secret
 More infomation about it [**here**](https://www.udacity.com/course/authentication-authorization-oauth--ud330)  
 
 1. Configure the app_id and app_secret on file fb_create_secrets.json and on
@@ -55,23 +57,6 @@ file: fb_create_secrets.json
   }  
 }
 ```
-
-```javascript
-//file: Login.html
-
-//<!--FACEBOOK SIGN IN -->
-<script>
-  window.fbAsyncInit = function() {
-  FB.init({
-    appId      : 'YOUR_APP_ID_HERE',
-    cookie     : true,  // enable cookies to allow the server to access 
-                        // the session
-    xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2' // use version 2.2
-  });
-  };
-```
-
 
 ## Setting up the database
 
@@ -92,8 +77,10 @@ categories = ("Women's Shoes", "Men's Shoes", "Casual Shoes",
               "Dress Shoes", "Boots", "Canvas Shoes")
 ```
 
+> [!CAUTION]
+> don't run  createCategories.py, if you want to populate with fake item to test app.
 
-1. If you want populate only the categories run the file createCategories.py, if you want populate categories and fake items for test don't run the createCategories.py, jump to step 2.
+1. If you want populate only the categories run the file createCategories.py, if you want populate categories and fake items for test **don't run**  createCategories.py, **jump** to step 2.
     > `$ python createCategories.py`
 
 2. If you want create some cateogories and items for test the app, run the file lotofthingdb.py
@@ -103,3 +90,7 @@ categories = ("Women's Shoes", "Men's Shoes", "Casual Shoes",
 
 - From the vagrant directory inside the virtual machine, go the repository directory and run the program  using:
      > `$ python application.py`
+
+## Acessing the app
+
+- Open your Web Navigator and open the url [**http://localhost:5000**](http://localhost:5000)
