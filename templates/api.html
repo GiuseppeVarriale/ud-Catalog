@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+  {% block head %}
+
+{% endblock %}
+
+
+{% block container %}
+<div class="bg-light py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mb-0">
+        <a href="{{ url_for('showHome')}}">Home</a> 
+        <span class="mx-2 mb-0">/</span> 
+        <a href="{{ url_for('showLogin')}}"><strong class="text-black">Login</strong></a> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="site-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 p-3 p-lg-5 border">
+        <div class="col-md-7 site-section-heading text-center pt-4">
+          <h2>API JSON endpoints</h2>
+        </div>
+        <div class="col-sm-6 col-lg-12 mb-4" data-aos="fade-up">
+          <div class="block-4 text-center border">
+            <div class="block-4-text p-4">
+              <h3><a href="{{url_for('catalogJSON')}}">All Catalog in JSON</a></h3>
+            </div>
+            <p class="mb-0">Return a JSON with all categories and items data</p>
+            <p class="text-primary font-weight-bold">http://localhost:5000{{url_for('catalogJSON')}}</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-12 mb-4" data-aos="fade-up">
+          <div class="block-4 text-center border">
+            <div class="block-4-text p-4">
+              <h3><a href="{{url_for('catalogSpecificCategoryJSON', category_id=1)}}">Items and Category data Specific ID</a></h3>
+            </div>
+            <p class="mb-0">Return a JSON with all items data (title, id, description, category_id) and category data (name and id) about specified category id</p>
+            <p class="text-primary font-weight-bold">http://localhost:5000/api/catalog/categories/category_id_number_here/</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-12 mb-4" data-aos="fade-up">
+          <div class="block-4 text-center border">
+            <div class="block-4-text p-4">
+              <h3><a href="{{url_for('categoriesJSON')}}">All Categories data</a></h3>
+            </div>
+            <p class="mb-0">Return a JSON with all categories data (id and name) without data about items</p>
+            <p class="text-primary font-weight-bold">http://localhost:5000/api/categories/</p>
+          </div>          
+        </div>
+        <div class="col-sm-6 col-lg-12 mb-4" data-aos="fade-up">
+          <div class="block-4 text-center border">
+            <div class="block-4-text p-4">
+              <h3><a href="{{url_for('specificCategoryJSON', category_id=1)}}">Data about specific Category</a></h3>
+            </div>
+            <p class="mb-0">Return a JSON with data (id and name) of a specific category id</p>
+            <p class="text-primary font-weight-bold">http://localhost:5000/api/categories/category_id_number_here/</p>
+          </div>          
+        </div>
+
+        <div class="col-sm-6 col-lg-12 mb-4" data-aos="fade-up">
+          <div class="block-4 text-center border">
+            <div class="block-4-text p-4">
+              <h3><a href="{{url_for('categoryItemsJSON',category_id=1)}}">Category and Items data about Specific Category</h3></a>
+            </div>
+            <p class="mb-0">Category Data (name and id) and all Items data (title, description, id, and cat_id) of a specific category</p>
+            <p class="text-primary font-weight-bold">http://localhost:5000/api/categories/category_id_number_here/items/</p>
+          </div>          
+        </div>
+        <div class="col-sm-6 col-lg-12 mb-4" data-aos="fade-up">
+          <div class="block-4 text-center border">
+            <div class="block-4-text p-4">
+              <h3><a href="{{url_for('ItemsJSON',category_id=1, item_id=1)}}">Specific item Data</h3></a>
+            </div>
+            <p class="mb-0">Item data (title,description, id, and cat_id) about a specific Item</p>
+            <p class="text-primary font-weight-bold">http://localhost:5000/api/items/item_id_number_here/</p>
+          </div>          
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -189,12 +189,16 @@ def categoryItemsJSON(category_id):
     items = session.query(Item).filter_by(cat_id=category_id).all()
     return jsonify(Items=[i.serialize for i in items])
 
-# a specific item data - JSOM
-@app.route('/api/categories/<int:category_id>/items/<int:item_id>/')
-def ItemsJSON(category_id, item_id):
+# a specific item data - JSON
+@app.route('/api/items/<int:item_id>/')
+def ItemsJSON(item_id):
     item = session.query(Item).filter_by(id=item_id).one()
     return jsonify(Item=item.serialize)
 
+# Show overview Api page 
+@app.route('/api/')
+def showApi():
+    return render_template('api.html')
 
 # Root/Home
 @app.route('/')
