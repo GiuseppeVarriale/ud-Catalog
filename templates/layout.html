@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Catalog</title>
+    <title> Shoes Catalog</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    
+    {% block head %}     
+    {% endblock %}
   </head>
   <body>
   
@@ -37,22 +38,26 @@
   
               <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
                 <div class="site-logo">
-                  <a href="{{ url_for('showHome') }}" class="js-logo-clone">Catalog</a>
+                  <a href="{{ url_for('showHome') }}" class="js-logo-clone">Shoes Catalog</a>
                 </div>
               </div>
   
               <div class="col-6 col-md-4 order-3 order-md-3 text-right">
                 <div class="site-top-icons">
                   <ul>
-                    <li><a href="#"><span class="icon icon-person"></span></a></li>
+                    {% if 'username' in session: %}
+                    <li><a href="{{url_for('aLogout')}}"><span class="icon icon-person"></span>Logout</a></li>
+                    {% else %}
+                      <li><a href="{{url_for('showLogin')}}"><span class="icon icon-person"></span></a></li>
+                    {% endif %}
                     <!-- <li><a href="#"><span class="icon icon-heart-o"></span></a></li> -->
                     <!-- <li>
                       <a href="cart.html" class="site-cart">
                         <span class="icon icon-shopping_cart"></span>
                         <span class="count">2</span>
                       </a>
-                    </li>  -->
-                    <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
+                    </li> 
+                    <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li> -->
                   </ul>
                 </div> 
               </div>

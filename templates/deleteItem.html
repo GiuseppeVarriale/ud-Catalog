@@ -33,7 +33,7 @@
                       <input type="submit" class="btn btn-primary btn-lg btn-block" value="Yes">
                     </div>
                     <div class="col-lg-6">
-                      <a href="{{url_for('showHome')}}">
+                      <a href="{{url_for('showCatalogItem', category_id=item.cat_id, item_id=item.id)}}">
                           <input type="button" class="btn btn-secondary btn-lg btn-block" value="Cancel">
                       </a>
                     </div>
