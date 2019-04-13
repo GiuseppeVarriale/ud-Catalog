@@ -223,57 +223,6 @@ def showCatalogCategory(category_id):
                            sCategory=category, items=items, login_session=login_session)
 
 
-# create a new Catalog Category
-@app.route('/admin/categories/new/', methods=['GET', 'POST'])
-def newCategory():
-    if request.method == 'POST':
-        newCategory = Category(name=request.form['name'], user_id=1)
-        session.add(newCategory)
-        session.commit()
-        flash("New Category Created!", "success")
-        return redirect(url_for('newCategory'))
-    else:
-        return render_template('newCategory.html', login_session=login_session)
-
-
-# Edit a Catalog Category
-@app.route('/admin/categories/<int:category_id>/edit/', methods=['GET', 'POST'])
-def editCategory(category_id):
-    try:
-        editedCategory = session.query(
-            Category).filter_by(id=category_id).one()
-    except NoResultFound:
-        flash("Error: The category with id '%s' does not exist." %
-              category_id, "error")
-        return redirect(url_for('showHome'))
-    if request.method == 'POST':
-        session.add(editedCategory)
-        session.commit()
-        flash("Category updated!", "success")
-        return redirect(url_for('editCategory', category_id=editedCategory.id))
-    else:
-        return render_template('editCategory.html', category=editedCategory, login_session=login_session)
-
-
-# Delete a Category
-@app.route('/admin/categories/<int:category_id>/delete/', methods=['GET', 'POST'])
-def deleteCategory(category_id):
-    try:
-        categoryToDelete = session.query(
-            Category).filter_by(id=category_id).one()
-    except NoResultFound:
-        flash("Error: The Item with id '%s' does not exist." %
-              category_id, "error")
-        return redirect(url_for('showHome'))
-    if request.method == 'POST':
-        session.delete(categoryToDelete)
-        session.commit()
-        flash("Category deleted!", "success")
-        return redirect(url_for('showHome'))
-    else:
-        return render_template('deleteCategory.html', category=categoryToDelete, login_session=login_session)
-
-
 # Catalog item web page
 @app.route('/categories/<int:category_id>/items/<int:item_id>/')
 def showCatalogItem(category_id, item_id):
