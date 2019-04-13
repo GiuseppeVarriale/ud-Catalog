@@ -3,20 +3,16 @@
 
 # Imports
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from sqlalchemy import desc, literal
 from sqlalchemy.orm.exc import NoResultFound
-from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
+from flask import Flask, render_template, redirect, url_for
+from flask import request, flash, jsonify
 from database_setup import Base, Category, Item, User, engine
 from flask import session as login_session
 import random
 import string
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.client import FlowExchangeError
 import httplib2
 import json
 from flask import make_response
-import requests
 
 
 # Flask instance
@@ -38,7 +34,7 @@ session = DBSession()
 @app.route('/login')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for x in xrange(32))
+                    for x in range(32))
     login_session['state'] = state
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
@@ -73,11 +69,12 @@ def fbconnect():
     # Use token to get user info from API
     userinfo_url = "https://graph.facebook.com/v2.8/me"
     '''
-        Due to the formatting for the result from the server token exchange we have to
-        split the token first on commas and select the first index which gives us the key : value
-        for the server access token then we split it on colons to pull out the actual token value
-        and replace the remaining quotes with nothing so that it can be used directly in the graph
-        api calls
+        Due to the formatting for the result from the server token exchange we
+        have to split the token first on commas and select the first index
+        which gives us the key : value for the server access token then we
+        split it on colons to pull out the actual token value and replace the
+        remaining quotes with nothing so that it can be used directly in the
+        graph api calls
     '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
 
@@ -116,7 +113,8 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;'
+    output += '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
 
     flash("Now logged in as %s" % login_session['username'], 'success')
     return output
@@ -186,14 +184,12 @@ def specificCategoryJSON(category_id):
 # a specific category items data - JSON
 @app.route('/api/categories/<int:category_id>/items/')
 def categoryItemsJSON(category_id):
-    category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(cat_id=category_id).all()
     return jsonify(Items=[i.serialize for i in items])
 
 # a specific item data - JSOM
 @app.route('/api/categories/<int:category_id>/items/<int:item_id>/')
 def ItemsJSON(category_id, item_id):
-    category = session.query(Category).filter_by(id=category_id).one()
     item = session.query(Item).filter_by(id=item_id).one()
     return jsonify(Item=item.serialize)
 
@@ -203,7 +199,9 @@ def ItemsJSON(category_id, item_id):
 def showHome():
     categories = session.query(Category).all()
     items = session.query(Item).order_by(Item.id.desc())[0:12]
-    return render_template('showHome.html', categories=categories, items=items)
+    return render_template('showHome.html',
+                           categories=categories,
+                           items=items)
 
 
 # Catalog Category web page
@@ -219,8 +217,11 @@ def showCatalogCategory(category_id):
         return redirect(url_for('showHome'))
 
     items = session.query(Item).filter_by(cat_id=category_id).all()
-    return render_template('showCatalogCategory.html', categories=categories,
-                           sCategory=category, items=items, login_session=login_session)
+    return render_template('showCatalogCategory.html',
+                           categories=categories,
+                           sCategory=category,
+                           items=items,
+                           login_session=login_session)
 
 
 # Catalog item web page
@@ -231,15 +232,20 @@ def showCatalogItem(category_id, item_id):
         item = session.query(Item).filter_by(id=item_id).one()
         category = session.query(Category).filter_by(id=item.cat_id).one()
     except NoResultFound:
-        flash("Error: The Item with id '%s' does not exist." % item_id, "error")
+        flash("Error: The Item with id '%s' does not exist." % item_id,
+              "error")
         return redirect(url_for('showHome'))
-    return render_template('showCatalogItem.html', category=category,
-                           item=item, categories=categories, login_session=login_session)
+    return render_template('showCatalogItem.html',
+                           category=category,
+                           item=item,
+                           categories=categories,
+                           login_session=login_session)
 
 
 # Create Catalog Item
 @app.route('/items/new/', methods=['GET', 'POST'])
-@app.route('/categories/<int:category_id>/items/new/', methods=['GET', 'POST'])
+@app.route('/categories/<int:category_id>/items/new/',
+           methods=['GET', 'POST'])
 def newItem(category_id=0):
     categories = session.query(Category).all()
     if 'username' not in login_session:
@@ -247,33 +253,50 @@ def newItem(category_id=0):
         if category_id == 0:
             return redirect(url_for('showHome'))
         else:
-            return redirect(url_for('showCatalogCategory', category_id=category_id))
+            return redirect(url_for('showCatalogCategory',
+                                    category_id=category_id))
     if request.method == 'POST':
-        newItem = Item(title=request.form['title'], description=request.form['description'],
-                       cat_id=request.form['categoryId'], user_id=login_session['user_id'])
+        newItem = Item(title=request.form['title'],
+                       description=request.form['description'],
+                       cat_id=request.form['categoryId'],
+                       user_id=login_session['user_id'])
         session.add(newItem)
         session.commit()
         flash("Item created!", "success")
-        return redirect(url_for('showCatalogItem', category_id=newItem.cat_id, item_id=newItem.id))
+        return redirect(url_for('showCatalogItem',
+                                category_id=newItem.cat_id,
+                                item_id=newItem.id))
     else:
-        return render_template('newItem.html', categories=categories, category_id=category_id, login_session=login_session)
+        return render_template('newItem.html',
+                               categories=categories,
+                               category_id=category_id,
+                               login_session=login_session)
 
 
 # Edit a Catalog Item
-@app.route('/categories/<int:category_id>/items/<int:item_id>/edit/', methods=['GET', 'POST'])
+@app.route('/categories/<int:category_id>/items/<int:item_id>/edit/',
+           methods=['GET', 'POST'])
 def editItem(category_id, item_id):
     categories = session.query(Category).all()
     try:
         editedItem = session.query(Item).filter_by(id=item_id).one()
     except NoResultFound:
-        flash("Error: The Item with id '%s' does not exist." % item_id, "error")
-        return redirect(url_for('showCatalogCategory', category_id=category_id))
+        flash("Error: The Item with id '%s' does not exist." % item_id,
+              "error")
+        return redirect(url_for('showCatalogCategory',
+                                category_id=category_id))
     if 'username' not in login_session:
-        flash("Please, login to your account to proceed!", "error")
-        return redirect(url_for('showCatalogItem', category_id=editedItem.cat_id, item_id=item_id))
+        flash("Please, login to your account to proceed!",
+              "error")
+        return redirect(url_for('showCatalogItem',
+                                category_id=editedItem.cat_id,
+                                item_id=item_id))
     if editedItem.user_id != login_session['user_id']:
-        flash("Only the Owner can edit this Item", "error")
-        return redirect(url_for('showCatalogItem', category_id=editedItem.cat_id, item_id=item_id))
+        flash("Only the Owner can edit this Item",
+              "error")
+        return redirect(url_for('showCatalogItem',
+                                category_id=editedItem.cat_id,
+                                item_id=item_id))
     if request.method == 'POST':
         if request.form['title']:
             editedItem.title = request.form['title']
@@ -285,38 +308,56 @@ def editItem(category_id, item_id):
         session.add(editedItem)
         session.commit()
         flash("Item updated!", "success")
-        return redirect(url_for('showCatalogItem', category_id=editedItem.cat_id, item_id=editedItem.id))
+        return redirect(url_for('showCatalogItem',
+                                category_id=editedItem.cat_id,
+                                item_id=editedItem.id))
     else:
         if editedItem.cat_id != category_id:
-            return redirect(url_for('editItem', category_id=editedItem.cat_id, item_id=editedItem.id))
+            return redirect(url_for('editItem',
+                                    category_id=editedItem.cat_id,
+                                    item_id=editedItem.id))
         else:
-            return render_template('editItem.html', item=editedItem, categories=categories, login_session=login_session)
+            return render_template('editItem.html',
+                                   item=editedItem,
+                                   categories=categories,
+                                   login_session=login_session)
 
 
 # Delete a Category item
-@app.route('/categories/<int:category_id>/items/<int:item_id>/delete/', methods=['GET', 'POST'])
+@app.route('/categories/<int:category_id>/items/<int:item_id>/delete/',
+           methods=['GET', 'POST'])
 def deleteItem(category_id, item_id):
     try:
         itemToDelete = session.query(Item).filter_by(id=item_id).one()
     except NoResultFound:
-        flash("Error: The Item with id '%s' does not exist." % item_id, "error")
-        return redirect(url_for('showCatalogCategory', category_id=category_id))
+        flash("Error: The Item with id '%s' does not exist." % item_id,
+              "error")
+        return redirect(url_for('showCatalogCategory',
+                                category_id=category_id))
     if 'username' not in login_session:
         flash("Please, login to your account to proceed!", "error")
-        return redirect(url_for('showCatalogItem', category_id=itemToDelete.cat_id, item_id=item_id))
+        return redirect(url_for('showCatalogItem',
+                                category_id=itemToDelete.cat_id,
+                                item_id=item_id))
     if itemToDelete.user_id != login_session['user_id']:
         flash("Only the Owner can delete this Item", "error")
-        return redirect(url_for('showCatalogItem', category_id=itemToDelete.cat_id, item_id=item_id))
+        return redirect(url_for('showCatalogItem',
+                                category_id=itemToDelete.cat_id,
+                                item_id=item_id))
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
         flash("Item deleted!", "success")
-        return redirect(url_for('showCatalogCategory', category_id=category_id))
+        return redirect(url_for('showCatalogCategory',
+                                category_id=category_id))
     else:
         if itemToDelete.cat_id != category_id:
-            return redirect(url_for('deleteItem', category_id=itemToDelete.cat_id, item_id=itemToDelete.id))
+            return redirect(url_for('deleteItem',
+                                    category_id=itemToDelete.cat_id,
+                                    item_id=itemToDelete.id))
         else:
-            return render_template('deleteItem.html', item=itemToDelete, login_session=login_session)
+            return render_template('deleteItem.html', item=itemToDelete,
+                                   login_session=login_session)
 
 
 if __name__ == '__main__':
