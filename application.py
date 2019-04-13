@@ -37,7 +37,9 @@ def showLogin():
                     for x in range(32))
     login_session['state'] = state
     # return "The current session state is %s" % login_session['state']
-    return render_template('login.html', STATE=state)
+    app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
+        'web']['app_id']
+    return render_template('login.html', STATE=state, app_id=app_id)
 
 
 @app.route('/logout')
