@@ -43,12 +43,13 @@ def showLogin():
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
+
 @app.route('/logout')
 def aLogout():
     if login_session['provider'] == 'facebook':
         fbdisconnect()
         login_session.clear()
-        return redirect(url_for('showHome'))    
+        return redirect(url_for('showHome'))
 
 
 @app.route('/fbconnect', methods=['POST'])
@@ -131,8 +132,6 @@ def fbdisconnect():
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     return "you have been logged out"
-
-
 
 
 # User Helper Functions
@@ -296,7 +295,7 @@ def newItem(category_id=0):
     categories = session.query(Category).all()
     if 'username' not in login_session:
         flash("Please, login to your account to proceed!", "error")
-        if category_id == 0 :
+        if category_id == 0:
             return redirect(url_for('showHome'))
         else:
             return redirect(url_for('showCatalogCategory', category_id=category_id))
