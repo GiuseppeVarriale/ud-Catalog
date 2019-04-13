@@ -93,3 +93,7 @@ categories = ("Women's Shoes", "Men's Shoes", "Casual Shoes",
 ## Acessing the app
 
 - Open your Web Navigator and open the url [**http://localhost:5000**](http://localhost:5000)
+
+## API JSON endpoints
+
+- Information about routes and data returns on api JSON endpoits are disponible on [**http://localhost:5000/api/**](http://localhost:5000/api/)
