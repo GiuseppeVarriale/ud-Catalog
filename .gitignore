@@ -3,3 +3,4 @@
 Vagrantfile
 *.sh
 template/
+fb_client_secrets.json

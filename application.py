@@ -18,11 +18,6 @@ from flask import make_response
 # Flask instance
 app = Flask(__name__)
 
-CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Catalog"
-
-
 # Create session and connect to DB
 Base.metadata.bind = engine
 
