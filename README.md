@@ -36,6 +36,9 @@ If **not** Download or Clone [**this repository**](https://github.com/udacity/fu
 
 3. If Download the content manualy from github you need to move the folder to vm vagrant folder.  
 
+4. If You want you can check/install the requiriments using the command:
+      > `$ pip install -r requirements.txt
+
 ## Facebook id with OAUTH
 
 To authentication the app use facebook api with OAUTH. You need to configure it with you app_id and app_secret
