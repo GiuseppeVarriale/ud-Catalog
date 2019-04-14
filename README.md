@@ -68,7 +68,7 @@ file: fb_create_secrets.json
 
 The categorias are created on createCategories.py, we used shoes categories to make this project, but  
 if you want, you can edit this file and change de categories editing the file!  
-on Line 21. 
+on Line 21.  
 
 ```python
 # createCategories.py

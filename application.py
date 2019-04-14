@@ -58,8 +58,9 @@ def fbconnect():
         'web']['app_id']
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
-        app_id, app_secret, access_token)
+    url = 'https://graph.facebook.com/oauth/access_token?\
+grant_type=fb_exchange_token&client_id=%s&client_secret=%s\
+    &fb_exchange_token=%s' % (app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -75,11 +76,10 @@ def fbconnect():
     '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
 
-    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
+    url = 'https://graph.facebook.com/v2.8/me?\
+access_token=%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-    # print "url sent for API access:%s"% url
-    # print "API JSON result: %s" % result
     data = json.loads(result)
     login_session['provider'] = 'facebook'
     login_session['username'] = data["name"]
@@ -90,7 +90,8 @@ def fbconnect():
     login_session['access_token'] = token
 
     # Get user picture
-    url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200' % token
+    url = 'https://graph.facebook.com/v2.8/me/picture?\
+access_token=%s&redirect=0&height=200&width=200' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -152,6 +153,7 @@ def getUserID(email):
     except:
         return None
 
+
 # Flask Routes
 # all catalog - JSON
 @app.route('/api/catalog/')
@@ -166,11 +168,13 @@ def catalogSpecificCategoryJSON(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     return jsonify(Category=category.Serialize)
 
+
 # all categories data without items - JSON
 @app.route('/api/categories/')
 def categoriesJSON():
     categories = session.query(Category).all()
     return jsonify(Category=[c.shortSerialize for c in categories])
+
 
 # a specific category data without items - JSON
 @app.route('/api/categories/<int:category_id>/')
@@ -178,11 +182,13 @@ def specificCategoryJSON(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     return jsonify(Category=category.shortSerialize)
 
+
 # a specific category items data - JSON
 @app.route('/api/categories/<int:category_id>/items/')
 def categoryItemsJSON(category_id):
     items = session.query(Item).filter_by(cat_id=category_id).all()
     return jsonify(Items=[i.serialize for i in items])
+
 
 # a specific item data - JSON
 @app.route('/api/items/<int:item_id>/')
@@ -190,10 +196,12 @@ def ItemsJSON(item_id):
     item = session.query(Item).filter_by(id=item_id).one()
     return jsonify(Item=item.serialize)
 
-# Show overview Api page 
+
+# Show overview Api page
 @app.route('/api/')
 def showApi():
     return render_template('api.html')
+
 
 # Root/Home
 @app.route('/')
